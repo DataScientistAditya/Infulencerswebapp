@@ -1,0 +1,959 @@
+<!DOCTYPE html>
+{% load static %}
+{% load notifications_tags %}
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title></title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="{% static 'style.css' %}">
+        <script src="{% static 'notifications/notify.js' %}" type="text/javascript"></script>
+        <script src="https://kit.fontawesome.com/2b6fd63908.js" crossorigin="anonymous"></script>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+      <style>
+      .cd-popup {
+				position: fixed;
+				left: 0;
+				top: 0;
+				height: 100%;
+				width: 100%;
+				background-color: rgba(94, 110, 141, 0.9);
+				opacity: 0;
+				visibility: hidden;
+				-webkit-transition: opacity 0.3s 0s, visibility 0s 0.3s;
+				-moz-transition: opacity 0.3s 0s, visibility 0s 0.3s;
+				transition: opacity 0.3s 0s, visibility 0s 0.3s;
+			}
+			.cd-popup.is-visible {
+				opacity: 1;
+				visibility: visible;
+				-webkit-transition: opacity 0.3s 0s, visibility 0s 0s;
+				-moz-transition: opacity 0.3s 0s, visibility 0s 0s;
+				transition: opacity 0.3s 0s, visibility 0s 0s;
+			}
+
+			.cd-popup-container {
+				position: relative;
+				width: 90%;
+				max-width: 400px;
+				margin: 4em auto;
+				background: #FFF;
+				border-radius: .25em .25em .4em .4em;
+				text-align: center;
+				box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+				-webkit-transform: translateY(-40px);
+				-moz-transform: translateY(-40px);
+				-ms-transform: translateY(-40px);
+				-o-transform: translateY(-40px);
+				transform: translateY(-40px);
+				/* Force Hardware Acceleration in WebKit */
+				-webkit-backface-visibility: hidden;
+				-webkit-transition-property: -webkit-transform;
+				-moz-transition-property: -moz-transform;
+				transition-property: transform;
+				-webkit-transition-duration: 0.3s;
+				-moz-transition-duration: 0.3s;
+				transition-duration: 0.3s;
+			}
+			.cd-popup-container p {
+				padding: 3em 1em;
+			}
+			.cd-popup-container .cd-buttons:after {
+				content: "";
+				display: table;
+				clear: both;
+			}
+			.cd-popup-container .cd-buttons li {
+				float: left;
+				width: 50%;
+				list-style: none;
+			}
+			.cd-popup-container .cd-buttons a {
+				display: block;
+				height: 60px;
+				line-height: 60px;
+				text-transform: uppercase;
+				color: #FFF;
+				-webkit-transition: background-color 0.2s;
+				-moz-transition: background-color 0.2s;
+				transition: background-color 0.2s;
+			}
+			.cd-popup-container h2{
+				font-size:18px;
+				font-style:impact;
+				padding-top:2%;
+			}
+			.cd-popup-container .cd-buttons li:first-child input {
+				background: #fc7169;
+				border-radius: 0 0 0 .25em;
+				border-style:none;
+				width:80%;
+			}
+			.no-touch .cd-popup-container .cd-buttons li:first-child input:hover {
+				background-color: #fc8982;
+			}
+			.cd-popup-container .cd-buttons li:last-child input {
+				background: #b6bece;
+				border-radius: 0 0 .25em 0;
+				border-style:none;
+				width:80%;
+			}
+			.no-touch .cd-popup-container .cd-buttons li:last-child input:hover {
+				background-color: #c5ccd8;
+				
+			}
+			.cd-popup-container .cd-popup-close {
+				position: absolute;
+				top: 8px;
+				right: 8px;
+				width: 30px;
+				height: 30px;
+			}
+			.cd-popup-container .cd-popup-close::before, .cd-popup-container .cd-popup-close::after {
+				content: '';
+				position: absolute;
+				top: 12px;
+				width: 14px;
+				height: 3px;
+				background-color: #8f9cb5;
+			}
+			.cd-popup-container .cd-popup-close::before {
+				-webkit-transform: rotate(45deg);
+				-moz-transform: rotate(45deg);
+				-ms-transform: rotate(45deg);
+				-o-transform: rotate(45deg);
+				transform: rotate(45deg);
+				left: 8px;
+			}
+			.cd-popup-container .cd-popup-close::after {
+				-webkit-transform: rotate(-45deg);
+				-moz-transform: rotate(-45deg);
+				-ms-transform: rotate(-45deg);
+				-o-transform: rotate(-45deg);
+				transform: rotate(-45deg);
+				right: 8px;
+			}
+			.is-visible .cd-popup-container {
+				-webkit-transform: translateY(0);
+				-moz-transform: translateY(0);
+				-ms-transform: translateY(0);
+				-o-transform: translateY(0);
+				transform: translateY(0);
+			}
+			@media only screen and (min-width: 1170px) {
+				.cd-popup-container {
+					margin: 8em auto;
+				}
+			}
+
+    .bn54 {
+			position: relative;
+			outline: none;
+			text-decoration: none;
+			border-radius: 15px;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			cursor: pointer;
+			text-transform: uppercase;
+			height: 55px;
+			width: 130px;
+			opacity: 1;
+			background-color:#FF9525 ;
+			border: 1px solid rgba(0, 0, 0, 0.6);
+      margin-left:2%;
+			}
+
+			.bn54 .bn54span {
+			font-family: Verdana, Geneva, Tahoma, sans-serif;
+			color: #000000;
+			font-size: 12px;
+			font-weight: 500;
+			letter-spacing: 0.7px;
+			}
+
+			.bn54:hover {
+			animation: bn54rotate 0.7s ease-in-out both;
+      background-color:#FF6025;
+			}
+
+			.bn54:hover .bn54span {
+			animation: bn54storm 0.7s ease-in-out both;
+			animation-delay: 0.06s;
+			}
+
+			@keyframes bn54rotate {
+			0% {
+				transform: rotate(0deg) translate3d(0, 0, 0);
+			}
+			25% {
+				transform: rotate(3deg) translate3d(0, 0, 0);
+			}
+			50% {
+				transform: rotate(-3deg) translate3d(0, 0, 0);
+			}
+			75% {
+				transform: rotate(1deg) translate3d(0, 0, 0);
+			}
+			100% {
+				transform: rotate(0deg) translate3d(0, 0, 0);
+			}
+			}
+
+		@keyframes bn54storm {
+		0% {
+			transform: translate3d(0, 0, 0) translateZ(0);
+		}
+		25% {
+			transform: translate3d(4px, 0, 0) translateZ(0);
+		}
+		50% {
+			transform: translate3d(-3px, 0, 0) translateZ(0);
+		}
+		75% {
+			transform: translate3d(2px, 0, 0) translateZ(0);
+		}
+		100% {
+			transform: translate3d(0, 0, 0) translateZ(0);
+		}
+  }
+  #center-text {          
+  display: flex;
+  flex: 1;
+  flex-direction:column; 
+  justify-content: center;
+  align-items: center;  
+  height:100%;
+  
+}
+#chat-circle {
+  position: fixed;
+  bottom: 50px;
+  right: 50px;
+  background: #5A5EB9;
+  width: 80px;
+  height: 80px;  
+  border-radius: 50%;
+  color: white;
+  padding: 28px;
+  cursor: pointer;
+  box-shadow: 0px 3px 16px 0px rgba(0, 0, 0, 0.6), 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 1px 5px 0 rgba(0, 0, 0, 0.12);
+}
+
+.btn#my-btn {
+     background: white;
+    padding-top: 13px;
+    padding-bottom: 12px;
+    border-radius: 45px;
+    padding-right: 40px;
+    padding-left: 40px;
+    color: #5865C3;
+}
+#chat-overlay {
+    background: rgba(255,255,255,0.1);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    display: none;
+}
+
+
+.chat-box {
+  display:none;
+  background: #efefef;
+  position:fixed;
+  right:30px;
+  bottom:50px;  
+  width:350px;
+  max-width: 85vw;
+  max-height:100vh;
+  border-radius:5px;  
+/*   box-shadow: 0px 5px 35px 9px #464a92; */
+  box-shadow: 0px 5px 35px 9px #ccc;
+}
+.chat-box-toggle {
+  float:right;
+  margin-right:15px;
+  cursor:pointer;
+}
+.chat-box-header {
+  background: #5A5EB9;
+  height:70px;
+  border-top-left-radius:5px;
+  border-top-right-radius:5px; 
+  color:white;
+  text-align:center;
+  font-size:20px;
+  padding-top:17px;
+}
+.chat-box-body {
+  position: relative;  
+  height:370px;  
+  height:auto;
+  border:1px solid #ccc;  
+  overflow: hidden;
+}
+.chat-box-body:after {
+  content: "";
+  background-image: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgdmlld0JveD0iMCAwIDIwMCAyMDAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMTAgOCkiIGZpbGw9Im5vbmUiIGZpbGwtcnVsZT0iZXZlbm9kZCI+PGNpcmNsZSBzdHJva2U9IiMwMDAiIHN0cm9rZS13aWR0aD0iMS4yNSIgY3g9IjE3NiIgY3k9IjEyIiByPSI0Ii8+PHBhdGggZD0iTTIwLjUuNWwyMyAxMW0tMjkgODRsLTMuNzkgMTAuMzc3TTI3LjAzNyAxMzEuNGw1Ljg5OCAyLjIwMy0zLjQ2IDUuOTQ3IDYuMDcyIDIuMzkyLTMuOTMzIDUuNzU4bTEyOC43MzMgMzUuMzdsLjY5My05LjMxNiAxMC4yOTIuMDUyLjQxNi05LjIyMiA5LjI3NC4zMzJNLjUgNDguNXM2LjEzMSA2LjQxMyA2Ljg0NyAxNC44MDVjLjcxNSA4LjM5My0yLjUyIDE0LjgwNi0yLjUyIDE0LjgwNk0xMjQuNTU1IDkwcy03LjQ0NCAwLTEzLjY3IDYuMTkyYy02LjIyNyA2LjE5Mi00LjgzOCAxMi4wMTItNC44MzggMTIuMDEybTIuMjQgNjguNjI2cy00LjAyNi05LjAyNS0xOC4xNDUtOS4wMjUtMTguMTQ1IDUuNy0xOC4xNDUgNS43IiBzdHJva2U9IiMwMDAiIHN0cm9rZS13aWR0aD0iMS4yNSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+PHBhdGggZD0iTTg1LjcxNiAzNi4xNDZsNS4yNDMtOS41MjFoMTEuMDkzbDUuNDE2IDkuNTIxLTUuNDEgOS4xODVIOTAuOTUzbC01LjIzNy05LjE4NXptNjMuOTA5IDE1LjQ3OWgxMC43NXYxMC43NWgtMTAuNzV6IiBzdHJva2U9IiMwMDAiIHN0cm9rZS13aWR0aD0iMS4yNSIvPjxjaXJjbGUgZmlsbD0iIzAwMCIgY3g9IjcxLjUiIGN5PSI3LjUiIHI9IjEuNSIvPjxjaXJjbGUgZmlsbD0iIzAwMCIgY3g9IjE3MC41IiBjeT0iOTUuNSIgcj0iMS41Ii8+PGNpcmNsZSBmaWxsPSIjMDAwIiBjeD0iODEuNSIgY3k9IjEzNC41IiByPSIxLjUiLz48Y2lyY2xlIGZpbGw9IiMwMDAiIGN4PSIxMy41IiBjeT0iMjMuNSIgcj0iMS41Ii8+PHBhdGggZmlsbD0iIzAwMCIgZD0iTTkzIDcxaDN2M2gtM3ptMzMgODRoM3YzaC0zem0tODUgMThoM3YzaC0zeiIvPjxwYXRoIGQ9Ik0zOS4zODQgNTEuMTIybDUuNzU4LTQuNDU0IDYuNDUzIDQuMjA1LTIuMjk0IDcuMzYzaC03Ljc5bC0yLjEyNy03LjExNHpNMTMwLjE5NSA0LjAzbDEzLjgzIDUuMDYyLTEwLjA5IDcuMDQ4LTMuNzQtMTIuMTF6bS04MyA5NWwxNC44MyA1LjQyOS0xMC44MiA3LjU1Ny00LjAxLTEyLjk4N3pNNS4yMTMgMTYxLjQ5NWwxMS4zMjggMjAuODk3TDIuMjY1IDE4MGwyLjk0OC0xOC41MDV6IiBzdHJva2U9IiMwMDAiIHN0cm9rZS13aWR0aD0iMS4yNSIvPjxwYXRoIGQ9Ik0xNDkuMDUgMTI3LjQ2OHMtLjUxIDIuMTgzLjk5NSAzLjM2NmMxLjU2IDEuMjI2IDguNjQyLTEuODk1IDMuOTY3LTcuNzg1LTIuMzY3LTIuNDc3LTYuNS0zLjIyNi05LjMzIDAtNS4yMDggNS45MzYgMCAxNy41MSAxMS42MSAxMy43MyAxMi40NTgtNi4yNTcgNS42MzMtMjEuNjU2LTUuMDczLTIyLjY1NC02LjYwMi0uNjA2LTE0LjA0MyAxLjc1Ni0xNi4xNTcgMTAuMjY4LTEuNzE4IDYuOTIgMS41ODQgMTcuMzg3IDEyLjQ1IDIwLjQ3NiAxMC44NjYgMy4wOSAxOS4zMzEtNC4zMSAxOS4zMzEtNC4zMSIgc3Ryb2tlPSIjMDAwIiBzdHJva2Utd2lkdGg9IjEuMjUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPjwvZz48L3N2Zz4=');
+  opacity: 0.1;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  height:100%;
+  position: absolute;
+  z-index: -1;   
+}
+#chat-input {
+  background: #f4f7f9;
+  width:100%; 
+  position:relative;
+  height:47px;  
+  padding-top:10px;
+  padding-right:50px;
+  padding-bottom:10px;
+  padding-left:15px;
+  border:none;
+  resize:none;
+  outline:none;
+  border:1px solid #ccc;
+  color:#888;
+  border-top:none;
+  border-bottom-right-radius:5px;
+  border-bottom-left-radius:5px;
+  overflow:hidden;  
+}
+.chat-input > form {
+    margin-bottom: 0;
+}
+#chat-input::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+  color: #ccc;
+}
+#chat-input::-moz-placeholder { /* Firefox 19+ */
+  color: #ccc;
+}
+#chat-input:-ms-input-placeholder { /* IE 10+ */
+  color: #ccc;
+}
+#chat-input:-moz-placeholder { /* Firefox 18- */
+  color: #ccc;
+}
+.chat-submit {  
+  position:absolute;
+  bottom:3px;
+  right:10px;
+  background: transparent;
+  box-shadow:none;
+  border:none;
+  border-radius:50%;
+  color:#5A5EB9;
+  width:35px;
+  height:35px;  
+}
+.chat-logs {
+  padding:15px; 
+  height:370px;
+  overflow-y:scroll;
+}
+
+.chat-logs::-webkit-scrollbar-track
+{
+  -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+  background-color: #F5F5F5;
+}
+
+.chat-logs::-webkit-scrollbar
+{
+  width: 5px;  
+  background-color: #F5F5F5;
+}
+
+.chat-logs::-webkit-scrollbar-thumb
+{
+  background-color: #5A5EB9;
+}
+
+
+
+@media only screen and (max-width: 500px) {
+   .chat-logs {
+        height:40vh;
+    }
+}
+
+.chat-msg.user > .msg-avatar img {
+  width:45px;
+  height:45px;
+  border-radius:50%;
+  float:left;
+  width:15%;
+}
+.chat-msg.self > .msg-avatar img {
+  width:45px;
+  height:45px;
+  border-radius:50%;
+  float:right;
+  width:15%;
+}
+.cm-msg-text {
+  background:white;
+  padding:10px 15px 10px 15px;  
+  color:#666;
+  max-width:75%;
+  float:left;
+  margin-left:10px; 
+  position:relative;
+  margin-bottom:20px;
+  border-radius:30px;
+}
+.chat-msg {
+  clear:both;    
+}
+.chat-msg.self > .cm-msg-text {  
+  float:right;
+  margin-right:10px;
+  background: #5A5EB9;
+  color:white;
+}
+.cm-msg-button>ul>li {
+  list-style:none;
+  float:left;
+  width:50%;
+}
+.cm-msg-button {
+    clear: both;
+    margin-bottom: 70px;
+}
+    </style>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+<!-- jQuery library -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<!-- Latest compiled JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0/jquery.min.js"></script>
+<div id="line-1"></div>
+<script
+  src="https://code.jquery.com/jquery-3.6.0.js"
+  integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
+  crossorigin="anonymous"></script>
+  <!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+
+
+    </head>
+    <body>
+    
+        <div class="dashboard">
+  <div class="left">
+    <div class="navigation">
+      <div class="wrapper2">
+        <div class="folders"></div>
+        <div class="folder-icons">
+          <div class="icon1">
+            <img src="https://i.ibb.co/qdgf3TJ/envelope.png" />
+          </div>
+          <div class="icon-name1">Project
+            <button class="buton-span"> 
+          </button></div>
+        </div>
+        {% if Type_User == "Adv" %}
+        <div class="folder-icons">
+          <div class="icon1">
+            <i class="fas fa-paper-plane"></i>
+          </div>
+          <button class="buton-span" id="Release" type="submit" style="cursor:pointer;">Release Money</button>
+        </div>
+        {% else %}
+        <div class="folder-icons">
+          <div class="icon1">
+            <i class="fas fa-paper-plane"></i>
+          </div>
+         <a href="{% url 'ReleaseRequest' offer_id %}" ><button class="buton-span" id="ReqRelease" type="submit" style="cursor:pointer;">Request Release</button></a>
+        </div>
+        {% endif %}
+        <div class="folder-icons">
+          <div class="icon1">
+            <i class="fas fa-thumbs-down"></i>
+          </div>
+          <button class="buton-span" type="submit" style="cursor:pointer;">Request Dispute</button>
+        </div>
+        <div class="folder-icons">
+          <div class="icon1">
+            <i class="fas fa-paper-plane"></i>
+          </div>
+         <a href="{% url 'AmountChangeRequest' offer_id %}" > <button class="buton-span" id="ChangAmnt" type="submit" style="cursor:pointer;">Cahnge Amount</button></a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="right-side">
+    <div class="right-header">
+      <div class="top-bar">
+        <div class="top-bar-justify">
+          <div class="big-inbox">
+            Details
+          </div>
+
+          <div class="top-bar-items">
+            <div class="notif">
+            {% notifications_unread as unread_count %}
+            {% if unread_count %}
+              <div class="online pink">
+              <small>{% live_notify_badge %}</small>
+              </div>
+               {% register_notify_callbacks callbacks='fill_notification_list,fill_notification_badge' %}
+              <a href="{% url 'Notification' request.user.id %}"><i class="far fa-bell"></i></a>
+               {% endif %}
+            </div>
+            <img src="https://i.ibb.co/vz4HYJb/envelope.png" />
+            <img src="https://i.ibb.co/52Vkq4M/earth-globe.png" />
+            <div class="icon-name5"> English </div>
+          </div>
+        </div>
+        <div class="profile2">
+          <img src="https://www.seekclipart.com/clipng/middle/103-1032140_graphic-transparent-1-vector-flat-small-user-icon.png" />
+          <div class="icon-name5">Larry Nunez</div>
+        </div>
+      </div>
+      <hr class="new-hr">
+      <div class="right-bottom">
+        <div class="check">
+          <label class="checkbox">
+        <input type="checkbox"/>
+        </label>
+          <div class="down-arrow">
+            <img src="https://i.ibb.co/WDqrXj6/drop-down-arrow.png" />
+          </div>
+        </div>
+        <div class="middle-buttons">
+          <div class="buttons">
+            <button class="new button"> 
+      <img src="https://i.ibb.co/X4j3TZR/reload.png" />
+           </button>
+            <button class="new button"> 
+      <img src="https://i.ibb.co/L60Yr87/eye.png" />
+           </button>
+            <button class="new button"> 
+      <img src="https://i.ibb.co/Lv6TqBG/waste-bin.png" />
+           </button>
+          </div>
+        </div>
+        <div class="search-arrow">
+          <img src="https://i.ibb.co/cx2t05H/scroll-arrows.png" />
+        </div>
+      </div>
+    </div>
+    <div class="right-body">
+      <div class="scroll-cards">
+      {% for i in user.notifications.unread  %}
+        <div class="card">
+          <div class="mails">
+            <div class="mail-names">
+              {{request.user.username}}
+            </div>
+
+          </div>
+          <div class="mail-info">
+            {{i}}
+          </div>
+          <div>
+          </div>
+          <div class="bottom-info">
+            <div class="check1">
+              <label class="checkbox">
+        <input type="checkbox"/>
+        </label>
+              <div class="star">
+                <img src="https://i.ibb.co/SN5SJ8x/star.png" />
+              </div>
+              <div class="star">
+                <img src="https://i.ibb.co/FW9tsHK/attachment.png" />
+              </div>
+
+            </div>
+            <div class="date">{{i.timestamp}}</div>
+          </div>
+        </div>
+        {% endfor %}
+
+      </div>
+      <div class="message">
+        <div class="mes-date">
+          Dec 1, 2018
+        </div>
+        {% if  Data.0.2 == "Basic" %}
+        <div class="title">
+          <div class="title-icons">
+            {{Data.0.1.0.Besic_Packages_Name}}
+          </div>
+        </div>
+       
+        <div class="message-from">
+          Hello {{request.user.username}}!
+          <h4>Description</h4>
+          <p>{{Data.0.1.0.Besic_Packages_Descriptions}}</p>
+          <h4>Amount</h4>
+          <p>$ {{Data.0.1.0.Besic_Packages_Price}}</p>
+          <h4>Delivery Time</h4>
+          <p>{{Data.0.1.0.Besic_Delivery_Time}}</p>
+          <h4>Fetures</h4>
+          {% if Data.0.1.0.Instagram_Image_to_Feed_Besic == True  %}
+            <p>Instagram Image to Feed</p>
+          {% endif %}
+          {% if Data.0.1.0.Instagram_Post_to_Story_Besic == True  %}
+            <p>Instagram Post to Story</p>
+          {% endif %}
+          {% if Data.0.1.0.Instagram_Video_to_Feed_Besic == True  %}
+            <p>Instagram Video to Feed</p>
+          {% endif %}
+          {% if Data.0.1.0.Instagram_Post_to_Reel_Besic == True  %}
+            <p>Instagram Post to Reel</p>
+          {% endif %}
+          {% if Data.0.1.0.Instagram_Live_Product_Endorsment_Besic == True  %}
+            <p>Instagram Live Product Endorsment</p>
+          {% endif %}
+          {% if Data.0.1.0.TikTok_Post_to_Feed_Besic == True  %}
+            <p>TikTok Post to Feed</p>
+          {% endif %}
+          {% if Data.0.1.0.TikTok_Post_Product_Review_Video_Besic == True  %}
+            <p>TikTok Post Product Review Video</p>
+          {% endif %}
+          {% if Data.0.1.0.TikTok_Product_Review_Short_Video_Besic == True  %}
+            <p>TikTok Product Review Short Video</p>
+          {% endif %}
+          {% if Data.0.1.0.TikTok_Live_Product_Review_Besic == True  %}
+            <p>TikTok Live Product Review</p>
+          {% endif %}
+          <br>
+          <br>
+          <h2>Submit Project Url</h2>
+          <p>Submit url of your Work in order to prove that you complete the project</p>
+        </div>
+        {% elif Data.0.2 == "std" %}
+          <div class="title">
+            
+            <div class="title-icons">
+            {{Data.0.1.0.Standered_Packeges_Name}}
+            
+          </div>
+        </div>
+       
+        <div class="message-from">
+          {{request.user.username}}
+          <h4>Description</h4>
+          <p>{{Data.0.1.0.Standered_Packeges_Description}}</p>
+          <h4>Amount</h4>
+          <p>$ {{Data.0.1.0.Standered_Packeges_Price}}</p>
+          <h4>Delivery Time</h4>
+          <p>{{Data.0.1.0.Standered_Delivery_Time}}</p>
+          <h4>Fetures</h4>
+          {% if Data.0.1.0.Instagram_Image_to_Feed_Std == True  %}
+            <p>Instagram Image to Feed</p>
+          {% endif %}
+          {% if Data.0.1.0.Instagram_Post_to_Story_Std == True  %}
+            <p>Instagram Post to Story</p>
+          {% endif %}
+          {% if Data.0.1.0.Instagram_Video_to_Feed_Std == True  %}
+            <p>Instagram Video to Feed</p>
+          {% endif %}
+          {% if Data.0.1.0.Instagram_Post_to_Reel_Std == True  %}
+            <p>Instagram Post to Reel</p>
+          {% endif %}
+          {% if Data.0.1.0.Instagram_Live_Product_Endorsment_Std == True  %}
+            <p>Instagram Live Product Endorsment</p>
+          {% endif %}
+          {% if Data.0.1.0.TikTok_Post_to_Feed_Std == True  %}
+            <p>TikTok Post to Feed</p>
+          {% endif %}
+          {% if Data.0.1.0.TikTok_Post_Product_Review_Video_Std == True  %}
+            <p>TikTok Post Product Review Video</p>
+          {% endif %}
+          {% if Data.0.1.0.TikTok_Product_Review_Short_Video_Std == True  %}
+            <p>TikTok Product Review Short Video</p>
+          {% endif %}
+          {% if Data.0.1.0.TikTok_Live_Product_Review_Std == True  %}
+            <p>TikTok Live Product Review</p>
+          {% endif %}
+          <br>
+          <br>
+        <h2>Submit Project Url</h2>
+        <p>Submit url of your Work in order to prove that you complete the project</p>
+        </div>
+        {% elif Data.0.2 == "prm" %}
+        <div class="title">
+         
+          <div class="title-icons">
+             {{Data.0.1.0.Premium_Packages_Name}}
+          </div>
+        </div>
+        <div class="from">
+          <span class="who">From: </span>{{request.user.username}}
+        </div>
+       
+        <div class="message-from">
+          Hello Malikan!
+          <h4>Description</h4>
+          <p>{{Data.0.1.0.Premium_Packages_Descriptions}}</p>
+          <h4>Amount</h4>
+          <p>$ {{Data.0.1.0.Premium_Packages_Price}}</p>
+          <h4>Delivery Time</h4>
+          <p>{{Data.0.1.0.Premium_Delivery_Time}}</p>
+          <h4>Fetures</h4>
+          {% if Data.0.1.0.Instagram_Image_to_Feed_Prm == True  %}
+            <p>Instagram Image to Feed</p>
+          {% endif %}
+          {% if Data.0.1.0.Instagram_Post_to_Story_Prm == True  %}
+            <p>Instagram Post to Story</p>
+          {% endif %}
+          {% if Data.0.1.0.Instagram_Video_to_Feed_Prm == True  %}
+            <p>Instagram Video to Feed</p>
+          {% endif %}
+          {% if Data.0.1.0.Instagram_Post_to_Reel_Prm == True  %}
+            <p>Instagram Post to Reel</p>
+          {% endif %}
+          {% if Data.0.1.0.Instagram_Live_Product_Endorsment_Prm == True  %}
+            <p>Instagram Live Product Endorsment</p>
+          {% endif %}
+          {% if Data.0.1.0.TikTok_Post_to_Feed_Prm == True  %}
+            <p>TikTok Post to Feed</p>
+          {% endif %}
+          {% if Data.0.1.0.TikTok_Post_Product_Review_Video_Prm == True  %}
+            <p>TikTok Post Product Review Video</p>
+          {% endif %}
+          {% if Data.0.1.0.TikTok_Product_Review_Short_Video_Prm == True  %}
+            <p>TikTok Product Review Short Video</p>
+          {% endif %}
+          {% if Data.0.1.0.TikTok_Live_Product_Review_Prm == True  %}
+            <p>TikTok Live Product Review</p>
+          {% endif %}
+          <br>
+          <br>
+          <h2>Submit Project Url</h2>
+        <p>Submit url of your Work in order to prove that you complete the project</p>
+        </div>
+
+        {% endif %}
+        
+        <form class="son-images" method ="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        
+        {% for x in Prg_form %}
+          <div class="inside-img" style="display:flex;">
+          {{x}}
+          </div>
+          {% endfor %}
+          <button type="submit" class="bn54"><span class="bn54span">Submit</span></button>
+        </form>
+      </div>
+    </div>
+  </div>
+  <script type="text/javascript">
+  {% if Type_Proj == "std" %}
+
+    var Project = '{{Data.0.1.0.Standered_Packeges_Price}}';
+
+  {% elif Type_Proj == "Basic" %}
+    var Project = '{{Data.0.1.0.Besic_Packages_Price}}';              
+  {% endif %}
+  
+    $( "#Release" ).click(function() {
+      event.preventDefault();
+		  $('.cd-popup').addClass('is-visible');
+      $(".pop-outer").fadeIn("slow");
+
+      $('#btnYes').click(function() {
+         event.preventDefault();
+		    $('.cd-popup').removeClass('is-visible');
+        console.log(Project);
+        $.ajax({
+          type: "GET",
+          url: '',
+          data: { 
+            "result": Project,
+            },
+            dataType: "json",
+          success: function (data) {
+            // any process in data
+            alert("successfull")
+          },
+          failure: function () {
+              alert("failure");
+          }
+          
+        });
+      $(".pop-outer").fadeOut("slow");
+    });
+    $('#btnNo').click(function() {
+          event.preventDefault();
+			    $('.cd-popup').removeClass('is-visible');
+         //$(".pop-outer").fadeOut("slow");
+    });
+});
+
+
+$( "#ReqRelease" ).click(function() {
+    var offers = '{{offer_id}}'
+      console.log(offers)
+       $.ajax({
+          type: "GET",
+          url: '',
+          data: { 
+            "offer": offers,
+            },
+            dataType: "json",
+          success: function (data) {
+            // any process in data
+            alert("successfull")
+          },
+          failure: function () {
+              alert("failure");
+          }
+          
+        });
+});
+
+$( "#ChangAmnt" ).click(function() {
+    var offers = '{{offer_id}}'
+      console.log(offers)
+       $.ajax({
+          type: "GET",
+          url: '',
+          data: { 
+            "amnt": offers,
+            },
+            dataType: "json",
+          success: function (data) {
+            // any process in data
+            alert("successfull")
+          },
+          failure: function () {
+              alert("failure");
+          }
+          
+        });
+});
+
+$(function() {
+  var INDEX = 0; 
+  $("#chat-submit").click(function(e) {
+    e.preventDefault();
+    var msg = $("#chat-input").val(); 
+    if(msg.trim() == ''){
+      return false;
+    }
+    generate_message(msg, 'self');
+    var buttons = [
+        {
+          name: 'Existing User',
+          value: 'existing'
+        },
+        {
+          name: 'New User',
+          value: 'new'
+        }
+      ];
+    setTimeout(function() {      
+      generate_message(msg, 'user');  
+    }, 1000)
+    
+  })
+  
+  function generate_message(msg, type) {
+    INDEX++;
+    var str="";
+    str += "<div id='cm-msg-"+INDEX+"' class=\"chat-msg "+type+"\">";
+    str += "          <span class=\"msg-avatar\">";
+    str += "            <img src=\"https:\/\/image.crisp.im\/avatar\/operator\/196af8cc-f6ad-4ef7-afd1-c45d5231387c\/240\/?1483361727745\">";
+    str += "          <\/span>";
+    str += "          <div class=\"cm-msg-text\">";
+    str += msg;
+    str += "          <\/div>";
+    str += "        <\/div>";
+    $(".chat-logs").append(str);
+    $("#cm-msg-"+INDEX).hide().fadeIn(300);
+    if(type == 'self'){
+     $("#chat-input").val(''); 
+    }    
+    $(".chat-logs").stop().animate({ scrollTop: $(".chat-logs")[0].scrollHeight}, 1000);    
+  }  
+  
+  function generate_button_message(msg, buttons){    
+    /* Buttons should be object array 
+      [
+        {
+          name: 'Existing User',
+          value: 'existing'
+        },
+        {
+          name: 'New User',
+          value: 'new'
+        }
+      ]
+    */
+    INDEX++;
+    var btn_obj = buttons.map(function(button) {
+       return  "              <li class=\"button\"><a href=\"javascript:;\" class=\"btn btn-primary chat-btn\" chat-value=\""+button.value+"\">"+button.name+"<\/a><\/li>";
+    }).join('');
+    var str="";
+    str += "<div id='cm-msg-"+INDEX+"' class=\"chat-msg user\">";
+    str += "          <span class=\"msg-avatar\">";
+    str += "            <img src=\"https:\/\/image.crisp.im\/avatar\/operator\/196af8cc-f6ad-4ef7-afd1-c45d5231387c\/240\/?1483361727745\">";
+    str += "          <\/span>";
+    str += "          <div class=\"cm-msg-text\">";
+    str += msg;
+    str += "          <\/div>";
+    str += "          <div class=\"cm-msg-button\">";
+    str += "            <ul>";   
+    str += btn_obj;
+    str += "            <\/ul>";
+    str += "          <\/div>";
+    str += "        <\/div>";
+    $(".chat-logs").append(str);
+    $("#cm-msg-"+INDEX).hide().fadeIn(300);   
+    $(".chat-logs").stop().animate({ scrollTop: $(".chat-logs")[0].scrollHeight}, 1000);
+    $("#chat-input").attr("disabled", true);
+  }
+  
+  $(document).delegate(".chat-btn", "click", function() {
+    var value = $(this).attr("chat-value");
+    var name = $(this).html();
+    $("#chat-input").attr("disabled", false);
+    generate_message(name, 'self');
+  })
+  
+  $("#chat-circle").click(function() {    
+    $("#chat-circle").toggle('scale');
+    $(".chat-box").toggle('scale');
+  })
+  
+  $(".chat-box-toggle").click(function() {
+    $("#chat-circle").toggle('scale');
+    $(".chat-box").toggle('scale');
+  })
+  
+})
+</script>  
+
+<div class="cd-popup" role="alert">
+	<div class="cd-popup-container">
+	<h2>Release Money?</h2>
+		<p>Are You Sure You Want to Release Money?</p>
+		<ul class="cd-buttons">
+			<li><input type='button' value='yes' id='btnYes' /></li>
+			<li><input type='button' value='no' id='btnNo' /></li>
+		</ul>
+	</div> <!-- cd-popup-container -->
+</div> <!-- cd-popup -->
+
+
+
+
+    </body>
+</html>

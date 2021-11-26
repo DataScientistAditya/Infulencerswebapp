@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+{% load notifications_tags %}
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="description" content="">
+<meta name="author" content="">
+<link rel="icon" href="assets/img/favicon.ico">
+<title>All Ads</title>
+<!-- Bootstrap core CSS -->
+
+<link href="{% static 'gigs/css/bootstrap.min.css' %}" rel="stylesheet">
+<!-- Fonts -->
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=Righteous" rel="stylesheet">
+<!-- Custom styles for this template -->
+<link href="{% static 'gigs/css/mediumish.css' %}" rel="stylesheet">
+<script src="{% static 'notifications/notify.js' %}" type="text/javascript"></script>
+
+<link rel="stylesheet" href="//code.jquery.com/ui/1.13.0/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+  <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.js"></script>
+  <script>
+  $( function() {
+    $( "#tags" ).autocomplete({
+      source: "{% url 'Autocomplete' %}"
+    });
+  } );
+  </script>
+
+<style>
+
+/* -------------------------------- 
+
+xpopup 
+
+-------------------------------- */
+			.cd-popup {
+				position: fixed;
+				left: 0;
+				top: 0;
+				height: 100%;
+				width: 100%;
+				background-color: rgba(94, 110, 141, 0.9);
+				opacity: 0;
+				visibility: hidden;
+				-webkit-transition: opacity 0.3s 0s, visibility 0s 0.3s;
+				-moz-transition: opacity 0.3s 0s, visibility 0s 0.3s;
+				transition: opacity 0.3s 0s, visibility 0s 0.3s;
+			}
+			.cd-popup.is-visible {
+				opacity: 1;
+				visibility: visible;
+				-webkit-transition: opacity 0.3s 0s, visibility 0s 0s;
+				-moz-transition: opacity 0.3s 0s, visibility 0s 0s;
+				transition: opacity 0.3s 0s, visibility 0s 0s;
+			}
+
+			.cd-popup-container {
+				position: relative;
+				width: 90%;
+				max-width: 400px;
+				margin: 4em auto;
+				background: #FFF;
+				border-radius: .25em .25em .4em .4em;
+				text-align: center;
+				box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+				-webkit-transform: translateY(-40px);
+				-moz-transform: translateY(-40px);
+				-ms-transform: translateY(-40px);
+				-o-transform: translateY(-40px);
+				transform: translateY(-40px);
+				/* Force Hardware Acceleration in WebKit */
+				-webkit-backface-visibility: hidden;
+				-webkit-transition-property: -webkit-transform;
+				-moz-transition-property: -moz-transform;
+				transition-property: transform;
+				-webkit-transition-duration: 0.3s;
+				-moz-transition-duration: 0.3s;
+				transition-duration: 0.3s;
+			}
+			.cd-popup-container p {
+				padding: 3em 1em;
+			}
+			.cd-popup-container .cd-buttons:after {
+				content: "";
+				display: table;
+				clear: both;
+			}
+			.cd-popup-container .cd-buttons li {
+				float: left;
+				width: 50%;
+				list-style: none;
+			}
+			.cd-popup-container .cd-buttons a {
+				display: block;
+				height: 60px;
+				line-height: 60px;
+				text-transform: uppercase;
+				color: #FFF;
+				-webkit-transition: background-color 0.2s;
+				-moz-transition: background-color 0.2s;
+				transition: background-color 0.2s;
+			}
+			.cd-popup-container h2{
+				font-size:18px;
+				font-style:impact;
+				padding-top:2%;
+			}
+			.cd-popup-container .cd-buttons li:first-child input {
+				background: #fc7169;
+				border-radius: 0 0 0 .25em;
+				border-style:none;
+				width:80%;
+			}
+			.no-touch .cd-popup-container .cd-buttons li:first-child input:hover {
+				background-color: #fc8982;
+			}
+			.cd-popup-container .cd-buttons li:last-child input {
+				background: #b6bece;
+				border-radius: 0 0 .25em 0;
+				border-style:none;
+				width:80%;
+			}
+			.no-touch .cd-popup-container .cd-buttons li:last-child input:hover {
+				background-color: #c5ccd8;
+				
+			}
+			.cd-popup-container .cd-popup-close {
+				position: absolute;
+				top: 8px;
+				right: 8px;
+				width: 30px;
+				height: 30px;
+			}
+			.cd-popup-container .cd-popup-close::before, .cd-popup-container .cd-popup-close::after {
+				content: '';
+				position: absolute;
+				top: 12px;
+				width: 14px;
+				height: 3px;
+				background-color: #8f9cb5;
+			}
+			.cd-popup-container .cd-popup-close::before {
+				-webkit-transform: rotate(45deg);
+				-moz-transform: rotate(45deg);
+				-ms-transform: rotate(45deg);
+				-o-transform: rotate(45deg);
+				transform: rotate(45deg);
+				left: 8px;
+			}
+			.cd-popup-container .cd-popup-close::after {
+				-webkit-transform: rotate(-45deg);
+				-moz-transform: rotate(-45deg);
+				-ms-transform: rotate(-45deg);
+				-o-transform: rotate(-45deg);
+				transform: rotate(-45deg);
+				right: 8px;
+			}
+			.is-visible .cd-popup-container {
+				-webkit-transform: translateY(0);
+				-moz-transform: translateY(0);
+				-ms-transform: translateY(0);
+				-o-transform: translateY(0);
+				transform: translateY(0);
+			}
+			@media only screen and (min-width: 1170px) {
+				.cd-popup-container {
+					margin: 8em auto;
+				}
+			}
+			.bn54 {
+			position: relative;
+			outline: none;
+			text-decoration: none;
+			border-radius: 50px;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			cursor: pointer;
+			text-transform: uppercase;
+			height: 45px;
+			width: 130px;
+			opacity: 1;
+			background-color: #ffffff;
+			border: 1px solid rgba(0, 0, 0, 0.6);
+			}
+
+			.bn54 .bn54span {
+			font-family: Verdana, Geneva, Tahoma, sans-serif;
+			color: #000000;
+			font-size: 12px;
+			font-weight: 500;
+			letter-spacing: 0.7px;
+			}
+
+			.bn54:hover {
+			animation: bn54rotate 0.7s ease-in-out both;
+			}
+
+			.bn54:hover .bn54span {
+			animation: bn54storm 0.7s ease-in-out both;
+			animation-delay: 0.06s;
+			}
+
+			@keyframes bn54rotate {
+			0% {
+				transform: rotate(0deg) translate3d(0, 0, 0);
+			}
+			25% {
+				transform: rotate(3deg) translate3d(0, 0, 0);
+			}
+			50% {
+				transform: rotate(-3deg) translate3d(0, 0, 0);
+			}
+			75% {
+				transform: rotate(1deg) translate3d(0, 0, 0);
+			}
+			100% {
+				transform: rotate(0deg) translate3d(0, 0, 0);
+			}
+			}
+
+		@keyframes bn54storm {
+		0% {
+			transform: translate3d(0, 0, 0) translateZ(0);
+		}
+		25% {
+			transform: translate3d(4px, 0, 0) translateZ(0);
+		}
+		50% {
+			transform: translate3d(-3px, 0, 0) translateZ(0);
+		}
+		75% {
+			transform: translate3d(2px, 0, 0) translateZ(0);
+		}
+		100% {
+			transform: translate3d(0, 0, 0) translateZ(0);
+		}
+		}
+		.bn53 {
+			background-color: #b81515;
+			padding: 7px;
+			width: 100px;
+			font-family: Verdana, Geneva, Tahoma, sans-serif;
+			animation: bn53bounce 4s infinite;
+			cursor: pointer;
+			border:none;
+			border-radius:10px;
+			color:white;
+			}
+
+			@keyframes bn53bounce {
+			5%,
+			50% {
+				transform: scale(1);
+			}
+
+			10% {
+				transform: scale(1);
+			}
+
+			15% {
+				transform: scale(1);
+			}
+
+			20% {
+				transform: scale(1) rotate(-5deg);
+			}
+
+			25% {
+				transform: scale(1) rotate(5deg);
+			}
+
+			30% {
+				transform: scale(1) rotate(-3deg);
+			}
+
+			35% {
+				transform: scale(1) rotate(2deg);
+			}
+
+			40% {
+				transform: scale(1) rotate(0);
+			}
+			}
+		
+		.bn30 {
+  border: 5em;
+  cursor: pointer;
+  outline: none;
+  font-size: 16px;
+  -webkit-transform: translate(0);
+  transform: translate(0);
+  background-image: linear-gradient(45deg, #4568dc, #b06ab3);
+  padding: 0.7em 2em;
+  border-radius: 65px;
+  box-shadow: 1px 1px 10px rgba(255, 255, 255, 0.438);
+  -webkit-transition: box-shadow 0.25s;
+  transition: box-shadow 0.25s;
+  color: white;
+}
+
+.bn30 .text {
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-image: linear-gradient(45deg, #4568dc, #b06ab3);
+}
+
+.bn30:after {
+  content: "";
+  border-radius: 18px;
+  position: absolute;
+  margin: 4px;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  z-index: -1;
+  background: #0e0e10;
+}
+
+.bn30:hover {
+  background-image: linear-gradient(-45deg, #4568dc, #b06ab3);
+  box-shadow: 0 12px 24px rgba(128, 128, 128, 0.1);
+}
+
+.bn30:hover .text {
+  background-image: linear-gradient(-45deg, #4568dc, #b06ab3);
+}
+		
+
+        </style>
+</head>
+
+
+<body>
+
+<!-- Begin Nav
+================================================== -->
+<nav class="navbar navbar-toggleable-md navbar-light bg-white fixed-top mediumnavigation">
+<button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+<span class="navbar-toggler-icon"></span>
+</button>
+<div class="container">
+	<!-- Begin Logo -->
+	<a class="navbar-brand" href="{% url 'index' %}">
+	<img src="{% static 'img/logo/logo.png' %}" alt="logo">
+	</a>
+	<!-- End Logo -->
+	<div class="collapse navbar-collapse" id="navbarsExampleDefault">
+		<!-- Begin Menu -->
+		<ul class="navbar-nav ml-auto">
+			<li class="nav-item active">
+			<a class="nav-link" href="{% url 'Dashboard' Profile_Name %}">Dashboard</a>
+			</li>
+			{% notifications_unread as unread_count %}
+			{% if unread_count %}
+			{% register_notify_callbacks callbacks='fill_notification_list,fill_notification_badge' %}
+			<li class="nav-item">
+			<a class="nav-link" href="#">Notification {% live_notify_badge %} </a>
+			</li>
+			{% endif %}
+			<li class="nav-item">
+			<a class="nav-link"  href="{% url 'All_Adv' %}">All Ads</a>
+			</li>
+			
+		</ul>
+		<!-- End Menu -->
+		<!-- Begin Search -->
+		<form class="form-inline my-2 my-lg-0" method="POST">
+			{% csrf_token %}
+			{% for i in Srch_Ad %}
+				{{i}}
+			{% endfor %}
+			<span class="search-icon"><svg class="svgIcon-use" width="25" height="25" viewbox="0 0 25 25"><path d="M20.067 18.933l-4.157-4.157a6 6 0 1 0-.884.884l4.157 4.157a.624.624 0 1 0 .884-.884zM6.5 11c0-2.62 2.13-4.75 4.75-4.75S16 8.38 16 11s-2.13 4.75-4.75 4.75S6.5 13.62 6.5 11z"></path></svg></span>
+			<button type="submit" class="bn54"><span class="bn54span">Search</span></button>
+		</form>
+		<!-- End Search -->
+	</div>
+</div>
+</nav>
+<!-- End Nav
+================================================== -->
+
+<!-- Begin Site Title
+================================================== -->
+<div class="container">
+	<div class="mainheading">
+		<h1 class="sitetitle"></h1>
+		<p class="lead">
+			 Find Influencer
+		</p>
+	</div>
+<!-- End Site Title
+================================================== -->
+
+	<!-- Begin Featured
+	================================================== -->
+	<section class="featured-posts">
+	{{Objs}}
+	<div class="section-title">
+		<h2><span>Featured</span></h2>
+	</div>
+	<div class="card-columns listfeaturedtag">
+		{% for i in Context_Gig  %}
+			<div class="card">
+			<div class="row">
+				<div class="col-md-5 wrapthumbnail">
+					<a href="{% url 'AdsDetails' i.4 %}">
+						<div class="thumbnail" style="background-image:url({{i.3}});">
+						</div>
+					</a>
+				</div>
+				<div class="col-md-7">
+					<div class="card-block">
+						<h2 class="card-title">{{i.0}}</h2>
+						<h4 class="card-text">{{i.2}}.</h4>
+						<h4 class="card-text">{{i.1}}.</h4>
+						<div class="metafooter">
+							<div class="wrapfooter">
+								<span class="meta-footer-thumb">
+								<a href="{% url 'AdsDetails' i.4 %}"><img class="author-thumb" src="{{i.3}}" alt="Sal"></a>
+								</span>
+								<span class="author-meta">
+								<span class="post-name"><a href="{% url 'AdsDetails' i.4 %}">Sal</a></span><br/>
+								<span class="post-date"><i class="fas fa-user-check"></i>Verified</span><span class="dot"></span><span class="post-read"></span>
+								</span>
+								<button  class = "bn30" id = {{i.4}}>Request Project</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		{% endfor %}
+
+
+	</div>
+	</section>
+	
+	<!-- End List Posts
+	================================================== -->
+
+	<!-- Begin Footer
+	================================================== -->
+	<div class="footer">
+		<p class="pull-left">
+			 Copyright &copy; 2017 Your Website Name
+		</p>
+		<p class="pull-right">
+			<a target="_blank" href="https://www.Mightyneurons.tech">Mightyneurons.tech</a>
+		</p>
+		<div class="clearfix">
+		</div>
+	</div>
+	<!-- End Footer
+	================================================== -->
+
+</div>
+<!-- /.container -->
+
+<!-- Bootstrap core JavaScript
+    ================================================== -->
+
+<script type="text/javascript">
+
+    $( ".bn30" ).click(function() {
+
+		Id_Prcess = this.id
+		console.log(Id_Prcess)
+		
+		event.preventDefault();
+		$('.cd-popup').addClass('is-visible');
+		//$(".cd-popup").fadeIn("slow");
+      	
+
+      $('#btnYes').click(function() {
+        event.preventDefault();
+		$('.cd-popup').removeClass('is-visible');
+        console.log(Id_Prcess);
+        $.ajax({
+          type: "GET",
+          url: '',
+          data: { 
+            "result":Id_Prcess ,
+            },
+            dataType: "json",
+          success: function (data) {
+            // any process in data
+            alert("successfull")
+          },
+          failure: function () {
+              alert("failure");
+          }
+          
+        });
+		
+      //$(".cd-popup").fadeOut("slow");
+    });
+    $('#btnNo').click(function() {
+		 	event.preventDefault();
+			$('.cd-popup').removeClass('is-visible');
+			 //$(".cd-popup").fadeOut("slow");
+    });
+});
+</script>  
+
+<div class="cd-popup" role="alert">
+	<div class="cd-popup-container">
+	<h2>Send Offer</h2>
+		<p>Do you want to Send Offer for this Advertisment?</p>
+		<ul class="cd-buttons">
+			<li><input type='button' value='yes' id='btnYes' /></li>
+			<li><input type='button' value='no' id='btnNo' /></li>
+		</ul>
+	</div> <!-- cd-popup-container -->
+</div> <!-- cd-popup -->
+
+</body>
+</html>

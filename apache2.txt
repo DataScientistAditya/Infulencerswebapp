@@ -1,0 +1,3 @@
+sudo apache2ctl configtest
+
+sudo service apache2 restart
