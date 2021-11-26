@@ -11,8 +11,9 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 
 from pathlib import Path
+from pathlib import Path
+from decouple import config
 import os
-
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -22,12 +23,22 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-_c-_9^5^a1+1(u0r78^oxtm*zl*%kd%ove2f)quxf#&)l3@w+g'
+#SECRET_KEY = 'django-insecure-_c-_9^5^a1+1(u0r78^oxtm*zl*%kd%ove2f)quxf#&)l3@w+g'
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+
+DEBUG = config('DEBUG', default=False, cast=bool)
 
 ALLOWED_HOSTS = ['159.89.247.164','adsbyinfluence.com']
+
+ROOT_URLCONF = f'{config("PROJECT_NAME")}.urls'
+
+WSGI_APPLICATION = f'{config("PROJECT_NAME")}.wsgi.application'
+
+ASGI_APPLICATION = f'{config("PROJECT_NAME")}.routing.application'
+
+# SECURITY WARNING: don't run with debug turned on in production!
+
+
 
 
 # Application definition
@@ -71,7 +82,7 @@ MIDDLEWARE = [
     'social_django.middleware.SocialAuthExceptionMiddleware',
 ]
 
-ROOT_URLCONF = 'Infulencers.urls'
+#ROOT_URLCONF = 'Infulencers.urls'
 
 TEMPLATES = [
     {
@@ -92,13 +103,13 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'Infulencers.wsgi.application'
-ASGI_APPLICATION = 'Infulencers.asgi.application'
+#WSGI_APPLICATION = 'Infulencers.wsgi.application'
+#ASGI_APPLICATION = 'Infulencers.asgi.application'
 CHANNEL_LAYERS = {
     'default': {
         'BACKEND': 'channels_redis.core.RedisChannelLayer',
         'CONFIG': {
-            "hosts": [('159.89.247.164', 6379)],
+            "hosts": [('127.0.0.1', 6379)],
         },
     },
 }
@@ -155,8 +166,8 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
-STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+#STATIC_URL = '/static/'
+#STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 MEDIA_ROOT =  os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
 
@@ -193,13 +204,13 @@ SOCIAL_AUTH_RAISE_EXCEPTIONS = True
 RAISE_EXCEPTIONS = True
 DEBUG = True
 
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_PORT = 587
-EMAIL_HOST_USER = 'mightyneurons.tech@gmail.com'
-EMAIL_HOST_PASSWORD = 'fdikcalznlmfcvsk'
+#EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+#EMAIL_HOST = 'smtp.gmail.com'
+#EMAIL_PORT = 587
+#EMAIL_HOST_USER = 'mightyneurons.tech@gmail.com'
+#EMAIL_HOST_PASSWORD = 'fdikcalznlmfcvsk'
 ##EMAIL_USE_SSL = True
-EMAIL_USE_TLS = True
+#EMAIL_USE_TLS = True
 
 SOCIAL_AUTH_GOOGLE_OAUTH2_USER_FIELDS = ['email','username']
 
@@ -224,4 +235,35 @@ MAX_UPLOAD_IMAGE_SIZE = "20971520"
 SESSION_EXPIRE_SECONDS = 180
 SESSION_EXPIRE_AFTER_LAST_ACTIVITY = True
 SESSION_COOKIE_AGE = 180
+
+AWS_ACCESS_KEY_ID = config('AWS_ACCESS_KEY_ID')
+AWS_SECRET_ACCESS_KEY = config('AWS_SECRET_ACCESS_KEY')
+AWS_STORAGE_BUCKET_NAME = config('AWS_STORAGE_BUCKET_NAME')
+AWS_S3_ENDPOINT_URL = config('AWS_S3_ENDPOINT_URL')
+AWS_S3_OBJECT_PARAMETERS = {
+    'CacheControl': 'max-age=86400',
+}
+AWS_LOCATION = config('AWS_LOCATION')
+
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static'),
+]
+
+#STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
+STATIC_URL = 'https://%s/%s/' % (AWS_S3_ENDPOINT_URL, AWS_LOCATION)
+TEMP = os.path.join(BASE_DIR, 'temp')
+STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = config('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+#DEFAULT_FROM_EMAIL = 'CodingWithMitch Team <noreply@codingwithmitch.com>'
+
+
+BASE_URL = "http://adsbyinfluence.com"
 
